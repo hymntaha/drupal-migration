@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * Implementation of hook_init().
+ *
+ * Load required includes.
+ */
+function labelfilefield_init() {
+  // If Content, FileField is not available, immediately disable Label File Field.
+  $disable = FALSE;
+  $message = '';  
+
+  if (!module_exists('content')) {
+    $disable = TRUE;
+    $message = t('The <a href="http://drupal.org/project/cck">Content Creation Kit</a> needs to be installed for it to work properly.');
+  }
+  
+  if (!module_exists('filefield')) {
+    $disable = TRUE;
+    $message = (!empty($message) ? '<br />' : '') . t('The <a href="http://drupal.org/project/filefield">FileField module</a> needs to be installed for it to work properly.');
+  }
+
+  if ($disable) {
+    module_disable(array('labelfilefield'));
+    drupal_set_message(t('The Label File Field module has been disabled.<br />') . $message);
+    return;
+  }
+  
+  // Load include code
+  module_load_include('inc', 'labelfilefield', 'labelfilefield_widget');
+}
+
+
+/**
+ * Implementation of hook_elements().
+ */
+function labelfilefield_elements() {
+  $elements = array();
+
+  // An labelfilefield is really just a FileField with a label.
+  $filefield_elements = filefield_elements();
+  $elements['labelfilefield_widget'] = $filefield_elements['filefield_widget'];
+  $elements['labelfilefield_widget']['#process'][] = 'labelfilefield_widget_process';
+  $elements['labelfilefield_widget']['#element_validate'][] = 'labelfilefield_widget_validate';
+
+  // FileField needs a separate value callback to save its label text.
+  $elements['labelfilefield_widget']['#value_callback'] = 'labelfilefield_widget_value';
+
+  return $elements;
+}
+
+function labelfilefield_theme() {
+  $theme =  array(
+    'labelfilefield_file' => array(
+      'arguments' => array('file' => NULL, 'attributes' => NULL, 'getsize' => TRUE, 'label' => ''),
+    ),
+
+    // Theme a Label File Field field item. It calls labelfieldfield_file with the proper
+    // item properties as arguments.
+    'labelfilefield_item' => array(
+      'arguments' => array('item' => NULL),
+    ),
+    // labelfilefield_widget form element type theme function.
+    'labelfilefield_widget' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'labelfilefield_widget.inc',
+    ),
+    // Use to generate a preview (admin view) of an labelfilefield item for use in
+    // field item forms and filefield widgets. Invoked by filefield_widget_process.
+    'labelfilefield_widget_preview' => array(
+      'arguments' => array('item' => NULL),
+    ),
+    // Theme function for the field item elements. allows you to place children
+    // within the context of the parent.
+    'labelfilefield_widget_item' => array(
+      'arguments' => array('element' => NULL),
+    ),
+    'labelfilefield_formatter_filelabel' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'labelfilefield_formatter.inc',
+    ),
+  );
+  
+  return $theme;
+}
+
+
+/**
+ * Implementation of hook_file_download.
+ *
+ * @param string $filepath
+ */
+function labelfilefield_file_download($filepath) {
+  // Delegate to FileField
+  return filefield_file_download($filepath);
+}
+
+/**
+ * Implementation of CCK's hook_widget_info().
+ *
+ * @return array
+ */
+function labelfilefield_widget_info() {
+  $module_path = drupal_get_path('module', 'labelfilefield');
+  return array(
+    'labelfilefield_widget' => array(
+      'label' => t('Labeled File'),
+      'field types' => array('filefield'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+      'callbacks' => array('default value' => CONTENT_CALLBACK_CUSTOM),
+      'description' => t('An edit widget for files that adds a label to the file.'),
+    ),
+  );
+}
+
+/**
+ * Implementation of CCK's hook_widget_settings().
+ *
+ * @param string $op
+ * @param array $widget
+ * @return array
+ */
+function labelfilefield_widget_settings($op, $widget) {
+  switch ($op) {
+    case 'form':
+      return labelfilefield_widget_settings_form($widget);
+    case 'validate':
+      return labelfilefield_widget_settings_validate($widget);
+    case 'save':
+      return labelfilefield_widget_settings_save($widget);
+  }
+}
+
+/**
+ * Implementation of CCK's hook_widget
+ *
+ * @param array $form
+ * @param array $form_state
+ * @param array $field
+ * @param array $items
+ * @param integer $delta
+ * @return array
+ */
+function labelfilefield_widget(&$form, &$form_state, $field, $items, $delta = 0) {
+  if (empty($items[$delta])) {
+    $items[$delta] = array('label' => '');
+  }
+  
+  // Delegate to FileField
+  $element = filefield_widget($form, $form_state, $field, $items, $delta);
+
+  return $element;
+}
+
+/**
+ * Implementation of hook_field_formatter_info
+ *
+ * @return array
+ */
+function labelfilefield_field_formatter_info() {
+  $formatters = filefield_field_formatter_info();
+  $formatters['filelabel'] = array(
+      'label' => t('File Label'),
+      'field types' => array('filefield'),
+      'description' => t('Displays the file\'s label'),
+  );
+
+  return $formatters;
+}
+
+/**
+ * Implementation of hook_form_[form_id]_alter().
+ *
+ * Modify the add new field form to make "FileLabel" the default formatter.
+ */
+function labelfilefield_form_content_field_overview_form_alter(&$form, &$form_state) {
+  $form['#submit'][] = 'labelfilefield_form_content_field_overview_submit';
+}
+
+/**
+ * Submit handler to set a new field's formatter to "labelfile_filelabel".
+ */
+function labelfilefield_form_content_field_overview_submit(&$form, &$form_state) {
+  if (isset($form_state['fields_added']['_add_new_field']) && isset($form['#type_name'])) {
+    $new_field = $form_state['fields_added']['_add_new_field'];
+    $node_type = $form['#type_name'];
+    $field = content_fields($new_field, $node_type);
+    if ($field['widget']['module'] == 'labelfilefield') {
+      foreach ($field['display_settings'] as $display_type => $display_settings) {
+        if ($field['display_settings'][$display_type]['format'] == 'default') {
+          $field['display_settings'][$display_type]['format'] = 'labelfile_filelabel';
+        }
+      }
+      content_field_instance_update($field);
+    }
+  }
+}
+
+/**
+ * Implementation of CCK's hook_default_value().
+ */
+function labelfilefield_default_value(&$form, &$form_state, $field, $delta) {
+  return filefield_default_value($form, $form_state, $field, $delta);
+}
+
+/**
+ * determine whether an attribute for the link should be the default or the custom
+ * 
+ * works for a url, alt or title attribute
+ *
+ * @param string $attr
+ * @param array $item
+ * @param array $field
+ * @return string
+ */
+function _labelfilefield_format_set_attribute($attr, $item, $field) {
+  $attr_value = '';
+  
+  // if custom values are allowed, use the user supplied value or default if one's not supplied
+  // else since no custom values are allowed, just use the default if supplied
+  // (URL is a special case - doesn't have a check for use custom value) 
+  if(($field['widget']['custom_'.$attr]) || $attr == 'label') {
+    $attr_value = !empty($item['data'][$attr]) ? $item['data'][$attr] : (!empty($field['widget'][$attr]) ? $field['widget'][$attr] : '');      
+  } else {
+    $attr_value = !empty($field['widget'][$attr]) ? $field['widget'][$attr] : '';
+  }
+  
+  return $attr_value;
+}
+
+function theme_labelfilefield_formatter($element) {
+  if (isset($element['#item']['nid']) && $node = node_load($element['#item']['nid'])) {
+    return labelfilefield_field_formatter($element['#field_name'], $element['#item'], $element['#formatter'], $node);
+  }
+}
+
+function theme_labelfilefield_file($file, $attributes = NULL, $getsize = TRUE, $label = '') {
+  $file['data']['description'] = $label;
+  return theme('filefield_file', $file);
+}
+
+function theme_labelfilefield_item($item) {
+  return theme('labelfilefield_file', $item, TRUE, $item[$url], $item[$target]);
+}
+
+function theme_labelfilefield_widget_item($element) {
+  return theme('filefield_widget_item', $element);
+}

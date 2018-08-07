@@ -1,0 +1,13 @@
+name = Authorize.net - User
+description = Authorize.net User Integration
+dependencies[] = authnet
+dependencies[] = authnet_cim_entity
+dependencies[] = authnet_ui
+package = Authorize.net
+core = 6.x
+; Information added by drupal.org packaging script on 2013-02-01
+version = "6.x-1.0-beta1"
+core = "6.x"
+project = "authnet"
+datestamp = "1359745730"
+

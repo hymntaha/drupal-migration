@@ -1,0 +1,381 @@
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+a{
+    text-decoration: none;
+}
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.cf:after {
+    clear: both;
+}
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf {
+    *zoom: 1;
+}
+strong{
+    font-weight:bold;
+}
+body{
+    background:url(../images/joycone_bg_html.jpg) no-repeat center top;
+    /*background: url(../images/body_bg.jpg);*/
+    height:2150px;
+    font-family: 'Raleway',sans-serif;
+    font-size:16px / 1em;
+    color:#1667a8;
+}
+a:visited{
+    color:#1667a8;
+}
+/*General styles START*/
+.container{
+    max-width:980px;
+    width:100%;
+    margin:0 auto;
+}
+.shadow{
+    -webkit-box-shadow: 3px 3px 10px 3px rgba(0,0,0,0.75);
+    -moz-box-shadow: 3px 3px 10px 3px rgba(0,0,0,0.75);
+    box-shadow: 3px 3px 10px 3px rgba(0,0,0,0.75);
+}
+.yellow_gradient{
+    background: rgba(255,253,216,1);
+    background: -moz-linear-gradient(top, rgba(255,253,216,1) 0%, rgba(255,253,216,1) 67%, rgba(255,249,137,1) 67%, rgba(255,253,216,1) 100%);
+    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,253,216,1)), color-stop(67%, rgba(255,253,216,1)), color-stop(67%, rgba(255,249,137,1)), color-stop(100%, rgba(255,253,216,1)));
+    background: -webkit-linear-gradient(top, rgba(255,253,216,1) 0%, rgba(255,253,216,1) 67%, rgba(255,249,137,1) 67%, rgba(255,253,216,1) 100%);
+    background: -o-linear-gradient(top, rgba(255,253,216,1) 0%, rgba(255,253,216,1) 67%, rgba(255,249,137,1) 67%, rgba(255,253,216,1) 100%);
+    background: -ms-linear-gradient(top, rgba(255,253,216,1) 0%, rgba(255,253,216,1) 67%, rgba(255,249,137,1) 67%, rgba(255,253,216,1) 100%);
+    background: linear-gradient(to bottom, rgba(255,253,216,1) 0%, rgba(255,253,216,1) 67%, rgba(255,249,137,1) 67%, rgba(255,253,216,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fffdd8', endColorstr='#fffdd8', GradientType=0 );
+}
+/*Font Styles START*/
+.rw_extra_bold,
+.rw_ultra_bold,
+.rw_bold,
+.rw_semi_bold,
+.rw_meduim,
+.rw_normal,
+.rw_light{
+    font-family: 'Raleway',sans-serif;
+    text-shadow: 0px 0px 1px;
+}
+.rw_light{
+    font-weight:300;
+}
+.rw_normal{
+    font-weight:400;
+}
+.rw_meduim{
+    font-weight:500;
+}
+.rw_semi_bold{
+    font-weight:600;
+}
+.rw_bold{
+    font-weight:700;
+}
+.rw_extra_bold{
+    font-weight:800;
+}
+.rw_ultra_bold{
+    font-weight:900;
+}
+/*Header style START*/
+#header{
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
+    background: #ffffff;
+    height: 9.75em;
+    margin-bottom: 1em;
+}
+.header_bottom{
+    position: relative;
+}
+/*#header:after{
+    background: url(../images/header_bottom.png) repeat-x bottom left transparent;
+    width: 100.7%;
+    height: 4.1em;
+    position: relative;
+    display: block;
+}*/
+.joy_logo{
+    height: 6.8em;
+    width: 17em;
+    position: relative;
+    left: 2.5em;
+    top: 0.25em;
+}
+.search{
+    position: absolute;
+    right: 26.9%;
+    top: 1.7em;
+    height: 4.5em;
+    width: 20.15em;
+    line-height: 3.9em;
+    padding-left: 0.5em;
+    background:url(../images/search_joy.png) no-repeat;
+}
+.search strong{
+    position: absolute;
+    top: -0.9em;
+    left: 1em;
+    color: #e51937;
+    font-size: 1.05em;
+    line-height: 1em;
+}
+#search_input{
+    height: 3.375em;
+    width: 13em;
+    font-size: 1em;
+    padding-left: 1em;
+    color: #a7a9ac;
+}
+#search_input{
+
+}
+
+#search_input,
+#search_input:active,
+#search_input:focus{
+    background: transparent;
+    border:none;
+    outline:none;
+}
+nav#header_menu{
+    text-align: center;
+    font-size: 1.2em;
+    margin: 0.6em 0;
+}
+#header_menu a{
+    width:16%;
+    display:inline-block;
+}
+/*Hook Social START*/
+#hook{
+    background: url(../images/hook_bg.png) no-repeat;
+    width: 48.6em;
+    height: 6.5em;
+    position: relative;
+    left: -0.3em;
+    display: inline-block;
+    margin-top: 1.7em;
+}
+#hook p{
+    padding: 1.15em 0 0 0;
+    font-size: 1.55em;
+    text-align: center;
+    line-height: 1.1em;
+}
+#social_list{
+    display: inline-block;
+    position: relative;
+    top: -1.1em;
+    left: 0.2em;
+    width: 20.2%;
+    text-align: right;
+}
+#social_list:before {
+    content: "Follow Us!";
+    position: absolute;
+    background: url(../images/follow_us.png) no-repeat;
+    width: 10em;
+    height: 3.5em;
+    top: 2.6em;
+    left: 1.9em;
+    text-indent: 9999px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#social_list li{
+    display: inline-block;
+    background: #1667a8;
+    height: 2.25em;
+    width: 2.25em;
+    border-radius: 12%;
+    cursor: pointer;
+    text-align: center;
+    margin-left: .75em;
+    opacity: 0.8;
+}
+#social_list li:nth-child(1){
+    margin-left:0px;
+}
+.facebook a,
+.pinterest a,
+.instagram a,
+.newsletter a{
+    height: 23px;
+    display: inline-block;
+    background-image: url(../images/social_sprite.png);
+    margin-top: .4375em;
+}
+.facebook a{
+    width: 0.6875em;
+}
+.pinterest a{
+    background-position: -11px 0;
+    width: 1.3125em;
+}
+.instagram a{
+    background-position: -32px 0;
+    width: 1.4375em;
+}
+.newsletter a{
+    background-position: -55px;
+    width: 1.8125em;
+    margin-left: 2px;
+}
+/*Content START*/
+#jump_slider,
+#bring_joy,
+#food_service,
+#create_joy{
+    margin-top: 2em;
+}
+#jump_slider,
+#bring_joy{
+    width: 60.5%;
+    display: inline-block;
+    margin-right:2.244%;
+    border-radius: 0.5em;
+    overflow: hidden;
+    float: left;
+    position:relative;
+}
+#jump_slider{
+    height: 28.6em;
+}
+#jump_slider .slider1 {
+    background: url(../images/jump_joy_slider1.png) no-repeat;
+    width: 100%;
+    height: 100%;
+    position:relative;
+}
+#jump_slider a{
+    background: url(../images/blue_button.png) no-repeat;
+    width: 10.04em;
+    height: 2.76em;
+    display: inline-block;
+    line-height: 2.3em;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5625em;
+    position:absolute;
+    right: 1.2em;
+    bottom: 2em;
+}
+#food_service,
+#create_joy{
+    border-radius: .5em;
+    display: inline-block;
+    width: 36.9387%;
+    float: left;
+    position: relative;
+}
+#food_service{
+    background: url(../images/food_service1.jpg) no-repeat #e51937;
+    height: 28.6em;
+}
+#food_service a{
+    position: absolute;
+    bottom: 3%;
+    margin-left: 6%;
+    line-height: 1.7em;
+    width: 94%;
+    background: url(../images/food_arrow1.png) no-repeat 96%;
+}
+#food_service .rw_ultra_bold{
+    color: #fff;
+    font-size: 2.1em;
+}
+#food_service .rw_normal{
+    color: #fcf578;
+    font-size: 1.55em;
+}
+#bring_joy{
+    height:21.333em;
+}
+#bring_joy img{
+    position: absolute;
+    right: 0.3em;
+    top: 2.2em;
+}
+#bring_joy h2.rw_extra_bold {
+    color: #e51937;
+    font-size: 1.875em;
+    margin-top: 1.675em;
+    margin-left: 4.7%;
+}
+#bring_joy p.rw_normal {
+    margin-left: 4.7%;
+    margin-top: 0.35em;
+    font-size: 1.15em;
+    width: 35%;
+    line-height: 1.25em;
+}
+#bring_joy a {
+    font-size: 1.6em;
+}

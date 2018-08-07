@@ -1,0 +1,11 @@
+name = Authorize.net API
+description = Provides Authorize.net API functions for other modules to use.
+dependencies[] = libraries
+package = Authorize.net
+core = 6.x
+; Information added by drupal.org packaging script on 2013-02-01
+version = "6.x-1.0-beta1"
+core = "6.x"
+project = "authnet"
+datestamp = "1359745730"
+

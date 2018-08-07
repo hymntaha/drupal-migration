@@ -1,0 +1,1 @@
+<div class="signup_bottom_banner"><?php print $block->content ?></div>
